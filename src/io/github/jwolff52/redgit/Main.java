@@ -10,12 +10,14 @@ import net.dean.jraw.http.oauth.OAuthException;
 public class Main {
     private static Credentials credentials;
     private static RedGit redGit;
+    private static String subreddit;
 
     public static void main(String[] args) {
         UserAgent userAgent = UserAgent.of("desktop", "io.github.jwolff52.redgit", "v0.1", args[0]);
         RedditClient redditClient = new RedditClient(userAgent);
         credentials = Credentials.script(args[0], args[1], args[2], args[3]);
 
+        setSubreddit(args[4]);
         try {
             redditClient.authenticate(redditClient.getOAuthHelper().easyAuth(credentials));
         } catch (OAuthException e) {
@@ -33,5 +35,13 @@ public class Main {
             LogHelper.severe("Unable to authenticate user, shutting down..." + e);
             System.exit(-1);
         }
+    }
+
+    public static String getSubreddit() {
+        return subreddit;
+    }
+
+    public static void setSubreddit(String subreddit) {
+        Main.subreddit = subreddit;
     }
 }
